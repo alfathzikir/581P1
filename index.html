@@ -24,7 +24,8 @@
 
         button {
             position:fixed;
-            left: 30%;
+            left: 40%;
+            bottom: 30%;
 
             }
 
@@ -35,10 +36,18 @@
             padding: 0;
             bottom: 50%;
         }
+
+        .center {
+
+            padding:30%;
+            text-align: center;
+            }
     </style>
 </head>
  
 <body >
+
+    <div class="center"><h1> VOICE TETRIS </h1></div>
     
     <div class="fixed">
         <canvas></canvas>
@@ -46,6 +55,9 @@
     </div>
  
     <script>
+        // This Script was taken and edited from https://rosettacode.org/wiki/Tetris/JavaScript
+        // Added Gesture functionality and Voice Input
+
         'use strict';
         var canvas = document.querySelector('canvas');
         canvas.width = 640;
@@ -143,8 +155,6 @@
                 }                       
             } else {
                 if ( yDiff > 0 ) {
-                    if (canRotate(fallingShape))
-                            rotate(fallingShape);
                 } else { 
                     if (!fastDown) {
                             fastDown = true;
