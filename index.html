@@ -38,7 +38,6 @@
         }
 
         .center {
-
             padding:30%;
             text-align: center;
             }
@@ -205,7 +204,7 @@
                 var checkAudio = function() {
                     analyser.getByteFrequencyData(freqBinDataArray);
 
-                    if(getRMS(freqBinDataArray) >= 30){
+                    if(getRMS(freqBinDataArray) >= 25){
                         if (canRotate(fallingShape))
                             rotate(fallingShape);
 
