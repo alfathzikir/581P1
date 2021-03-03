@@ -85,8 +85,6 @@
         var scoreboard = new Scoreboard();
 
 
-        
-
         addEventListener('touchstart', handleTouchStart, false);
         addEventListener('touchmove', handleTouchMove, false)
 
@@ -94,6 +92,7 @@
         var yDown = null;
 
         function getTouches(evt) {
+            
         return evt.touches ||             // browser API
                 evt.originalEvent.touches; // jQuery
         }                                                     
@@ -181,7 +180,7 @@
                 var checkAudio = function() {
                     analyser.getByteFrequencyData(freqBinDataArray);
 
-                    if(getRMS(freqBinDataArray) >= 30){
+                    if(getRMS(freqBinDataArray) >= 20){
                         if (canRotate(fallingShape))
                             rotate(fallingShape);
 
@@ -209,15 +208,6 @@
         function getIndexOfMax(array) {
             return array.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0);
         }
-        
-        addEventListener('click', function () {
-            startNewGame();
-        });
- 
-        addEventListener('keyup', function () {
-            keyDown = false;
-            fastDown = false;
-        });
  
         function canRotate(s) {
             if (s === Shapes.Square)
@@ -453,25 +443,13 @@
             drawUI();
  
             if (scoreboard.isGameOver()) {
-                drawStartScreen();
+                startNewGame()
             } else {
                 drawFallingShape();
             }
         }
  
-        function drawStartScreen() {
-            g.font = mainFont;
- 
-            fillRect(titleRect, titlebgColor);
-            fillRect(clickRect, titlebgColor);
- 
-            g.fillStyle = textColor;
-            g.fillText('Tetris', titleX, titleY);
- 
-            g.font = smallFont;
-            g.fillText('click to start', clickX, clickY);
-        }
- 
+
         function fillRect(r, color) {
             g.fillStyle = color;
             g.fillRect(r.x, r.y, r.w, r.h);
