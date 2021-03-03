@@ -201,7 +201,7 @@
                 var checkAudio = function() {
                     analyser.getByteFrequencyData(freqBinDataArray);
 
-                    if(getRMS(freqBinDataArray) >= 25){
+                    if(getRMS(freqBinDataArray) >= 35){
                         if (canRotate(fallingShape))
                             rotate(fallingShape);
 
