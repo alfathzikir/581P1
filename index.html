@@ -162,10 +162,6 @@
         };
         
 
-        window.addEventListener('load', (e) => {
-            AudioInit();
-        })
-
         function AudioInit() {
             var audioContext = new(window.AudioContext || window.webkitAudioContext)();
             var microphone;
@@ -180,6 +176,7 @@
                         microphone = audioContext.createMediaStreamSource(stream);
                         microphone.connect(analyser);
                         //analyser.connect(audioContext.destination);
+                        beginRecording()
                     
                     })
                     .catch(function(err) {
@@ -594,7 +591,6 @@
             selectShape();
             scoreboard.reset();
             animate(-1);
-            beginRecording();
         }
  
         function initGrid() {
