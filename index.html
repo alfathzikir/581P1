@@ -3,6 +3,14 @@
  
 <head>
     <meta charset='UTF-8'>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/speech-commands@0.4.0/dist/speech-commands.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    <!-- Jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     
     <style>
         canvas {
@@ -14,18 +22,29 @@
             margin: -320px 0 0 -320px;
         }
 
+        button {
+            position:fixed;
+            left: 30%;
+
+            }
+
         body,
         html{
             overflow: hidden;
             margin: 0;
             padding: 0;
+            bottom: 50%;
         }
     </style>
 </head>
  
 <body >
-    <canvas></canvas>
+    
     <div class="fixed">
+        <canvas></canvas>
+        <button id = "start" class="btn btn-primary btn-lg fs-1">Start Game</button>
+    </div>
+ 
     <script>
         'use strict';
         var canvas = document.querySelector('canvas');
@@ -83,7 +102,6 @@
  
         var grid = [];
         var scoreboard = new Scoreboard();
-
 
         addEventListener('touchstart', handleTouchStart, false);
         addEventListener('touchmove', handleTouchMove, false)
@@ -162,7 +180,7 @@
                         microphone = audioContext.createMediaStreamSource(stream);
                         microphone.connect(analyser);
                         //analyser.connect(audioContext.destination);
-                        beginRecording();
+                    
                     })
                     .catch(function(err) {
                         console.error('error: ' + err);
@@ -180,7 +198,7 @@
                 var checkAudio = function() {
                     analyser.getByteFrequencyData(freqBinDataArray);
 
-                    if(getRMS(freqBinDataArray) >= 20){
+                    if(getRMS(freqBinDataArray) >= 30){
                         if (canRotate(fallingShape))
                             rotate(fallingShape);
 
@@ -208,6 +226,15 @@
         function getIndexOfMax(array) {
             return array.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0);
         }
+        
+        document.getElementById("start").addEventListener('click', function () {
+            startNewGame();
+        });
+ 
+        addEventListener('keyup', function () {
+            keyDown = false;
+            fastDown = false;
+        });
  
         function canRotate(s) {
             if (s === Shapes.Square)
@@ -443,13 +470,25 @@
             drawUI();
  
             if (scoreboard.isGameOver()) {
-                startNewGame()
+                drawStartScreen();
             } else {
                 drawFallingShape();
             }
         }
  
-
+        function drawStartScreen() {
+            g.font = mainFont;
+ 
+            fillRect(titleRect, titlebgColor);
+            fillRect(clickRect, titlebgColor);
+ 
+            g.fillStyle = textColor;
+            g.fillText('Tetris', titleX, titleY);
+ 
+            g.font = smallFont;
+            g.fillText('click to start', clickX, clickY);
+        }
+ 
         function fillRect(r, color) {
             g.fillStyle = color;
             g.fillRect(r.x, r.y, r.w, r.h);
@@ -555,6 +594,7 @@
             selectShape();
             scoreboard.reset();
             animate(-1);
+            beginRecording();
         }
  
         function initGrid() {
@@ -581,15 +621,7 @@
  
         init();
     </script>
-    </div>
-    <div>
-        <h1>
-        Volume: 
-        <script type="text/javascript">
-            document.write(getRMS(freqBinDataArray))
-        </script>
-        </h1>
-    </div>
+
  
 </body>
  
