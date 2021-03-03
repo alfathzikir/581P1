@@ -181,6 +181,12 @@
                 var checkAudio = function() {
                     analyser.getByteFrequencyData(freqBinDataArray);
 
+                    if(getRMS(freqBinDataArray) >= 50){
+                        if (canRotate(fallingShape))
+                            rotate(fallingShape);
+
+                    }
+
                     console.log('Volume: ' + getRMS(freqBinDataArray));
                     console.log('Freq Bin: ' + getIndexOfMax(freqBinDataArray));
                     //console.log(freqBinDataArray);
